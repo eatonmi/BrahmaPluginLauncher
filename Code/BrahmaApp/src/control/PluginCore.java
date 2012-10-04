@@ -22,7 +22,7 @@ import foundation.DependencyRetreiver;
 import plugin.Plugin;
 
 
-public class PluginCore {
+public class PluginCore extends LayoutAccesser {
 	final static String SETTINGS_BUTTON_LABEL = "Settings";
 	private ConfigurationManager confManager;
 	private Thread currentThread;
@@ -285,5 +285,25 @@ public class PluginCore {
 	public Set<String> getPluginIds()
 	{
 		return this.idToPlugin.keySet();
+	}
+
+	@Override
+	public JScrollPane getRightPanel() {
+		return this.scrollPane;
+	}
+
+	@Override
+	public void setRightPanel(JScrollPane rightPanel) {
+		this.scrollPane = rightPanel;
+	}
+
+	@Override
+	public JPanel getBottomPanel() {
+		return this.bottom;
+	}
+
+	@Override
+	public void setBottomPanel(JPanel bottomPanel) {
+		this.bottom = bottomPanel;
 	}
 }
