@@ -1,6 +1,8 @@
 package recordextension;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -9,11 +11,14 @@ import plugin.Plugin;
 
 public class PersonalRecordExtension extends Plugin {
 	public static final String PLUGIN_ID = "Personal Record";
-
+	
+	private List<String> dependencies;
+	
 	JPanel panel;
 	
 	public PersonalRecordExtension() {
 		super(PLUGIN_ID);
+		this.dependencies = new ArrayList<String>();
 	}
 
 	@Override
@@ -32,13 +37,23 @@ public class PersonalRecordExtension extends Plugin {
 	public void stop() {
 		// Nothing to finalize
 	}
-
+	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	@Override
+	public void addDependency(String id) {
+		this.dependencies.add(id);
+	}
+
+	@Override
+	public List<String> getDependencies() {
+		return this.dependencies;
 	}
 
 }

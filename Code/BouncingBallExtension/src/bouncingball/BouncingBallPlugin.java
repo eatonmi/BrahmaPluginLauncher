@@ -1,6 +1,8 @@
 package bouncingball;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -14,11 +16,16 @@ import plugin.Plugin;
  */
 public class BouncingBallPlugin extends Plugin {
 	public static final String PLUGIN_ID = "Bouncing Ball";
+	public static final String FAKE_DEP ="Personal Record";
+	
+	private List<String> dependencies;
 	
 	private BBPanel panel;
 	
 	public BouncingBallPlugin() {
 		super(PLUGIN_ID);
+		this.dependencies = new ArrayList<String>();
+		this.addDependency(FAKE_DEP);
 	}
 
 	@Override
@@ -42,5 +49,15 @@ public class BouncingBallPlugin extends Plugin {
 	// to include in manifest file
 	public static void main(String[] args) {
 		
+	}
+
+	@Override
+	public void addDependency(String id) {
+		this.dependencies.add(id);
+	}
+
+	@Override
+	public List<String> getDependencies() {
+		return this.dependencies;
 	}
 }

@@ -11,6 +11,10 @@ import javax.swing.*;
 
 /////////////////////////////////////////////////////////////////// BBPanel
 class BBPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8021116848036613504L;
 	BallInBox m_bb;   // The bouncing ball panel
 
 	//========================================================== constructor
