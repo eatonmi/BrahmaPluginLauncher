@@ -13,17 +13,20 @@ import java.util.jar.Manifest;
 
 import plugin.Plugin;
 
+import foundation.DependencyManager;
 import foundation.WatchDir;
 
 public class Launcher implements Runnable {
 	private PluginCore core;
 	private WatchDir watchDir;
 	private HashMap<Path, Plugin> pathToPlugin;
+	private DependencyManager depManager;
 
 	public Launcher(PluginCore core) throws IOException {
 		this.core = core;
 		this.pathToPlugin = new HashMap<Path, Plugin>();
 		watchDir = new WatchDir(this, FileSystems.getDefault().getPath("plugins"), false);
+		this.depManager = new DependencyManager();
 	}
 
 	@Override

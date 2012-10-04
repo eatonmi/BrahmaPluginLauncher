@@ -1,26 +1,38 @@
 package foundation;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import plugin.IPlugin;
+import plugin.Plugin;
 
 public class DependencyManager {
 	
-	List<IPlugin> loadedPlugins;
+	List<String> loadedPluginIds;
 
-	public void addPluginToLoadedPlugins(IPlugin add)
+	public DependencyManager()
 	{
-	
+		this.loadedPluginIds = new ArrayList<String>();
 	}
 	
-	public void readDependencies(IPlugin read)
+	public void addPluginToLoadedPlugins(Plugin add)
 	{
-
+		this.loadedPluginIds.add(add.getId());
 	}
 	
-	public boolean areDependenciesResolved(IPlugin check)
+	public void removePluginFromList(String id)
 	{
-		return false;
+		this.loadedPluginIds.remove(id);
+	}
+	
+	public boolean areDependenciesResolved(Plugin check)
+	{
+		for(String dep : check.getDependencies())
+		{
+			if(!this.loadedPluginIds.contains(dep))
+				return false;
+		}
+		
+		return true;
 	}
 	
 	
