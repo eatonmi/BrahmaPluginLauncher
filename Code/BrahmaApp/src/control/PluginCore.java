@@ -17,6 +17,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import foundation.ConfigurationManager;
+import foundation.DependencyRetreiver;
 
 import plugin.Plugin;
 
@@ -250,6 +251,7 @@ public class PluginCore {
 	
 	private void reloadPlugins()
 	{
+		DependencyRetreiver.getManager().clearDependencies();
 		this.removeAllPlugins();
 		this.startThread();
 	}
