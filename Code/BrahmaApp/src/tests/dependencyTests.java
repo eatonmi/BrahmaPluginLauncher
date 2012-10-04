@@ -62,5 +62,18 @@ public class dependencyTests {
 		this.depManager.addPluginToLoadedPlugins(fixPlugin);
 		Assert.assertTrue(this.depManager.areDependenciesResolved(this.testPlugin));
 	}
+	
+	@Test
+	public void testChainDependency() {
+		this.testPlugin.addDependency("ChainDependentMiddle");
+		Plugin chainDependentMiddle = new testPlugin("ChainDependentMiddle");
+		chainDependentMiddle.addDependency("ChainDependentTop");
+		Plugin chainDependentTop = new testPlugin("ChainDependentTop");
+		this.depManager.addPluginToLoadedPlugins(chainDependentMiddle);
+		this.depManager.addPluginToLoadedPlugins(this.testPlugin);
+		Assert.assertFalse(this.depManager.areDependenciesResolved(this.testPlugin));
+		this.depManager.addPluginToLoadedPlugins(chainDependentTop);
+		Assert.assertTrue(this.depManager.areDependenciesResolved(this.testPlugin));
+	}
 
 }

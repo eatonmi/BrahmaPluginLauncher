@@ -16,7 +16,9 @@ public class DependencyManager {
 	
 	public void addPluginToLoadedPlugins(Plugin add)
 	{
+		add.setDependenciesResolved(this.areDependenciesResolved(add));
 		this.availablePlugins.add(add);
+		this.recheckAllDependenciesAndGetNewlyResolved();
 	}
 	
 	public void removePluginFromList(String id)
@@ -27,6 +29,7 @@ public class DependencyManager {
 	public boolean areDependenciesResolved(Plugin check)
 	{
 		boolean retVal = true;
+		
 		for(String dep : check.getDependencies())
 		{
 			if(!retVal)
@@ -38,7 +41,7 @@ public class DependencyManager {
 			
 			for(Plugin current : this.availablePlugins)
 			{
-				if(current.getId() == dep)
+				if(current.getId() == dep && current.dependenciesResolved())
 				{
 					available = true;
 					break;
@@ -47,6 +50,10 @@ public class DependencyManager {
 			
 			retVal = available;
 		}
+		if(!retVal)
+		{
+			System.out.println("Plugin " + check.getId() + " missing depenencies: ");
+		}
 		
 		return retVal;
 	}
@@ -54,20 +61,27 @@ public class DependencyManager {
 	public List<Plugin> recheckAllDependenciesAndGetNewlyResolved() 
 	{
 		ArrayList<Plugin> retVal = new ArrayList<Plugin>();
-		for(Plugin recheck : this.availablePlugins)
+		boolean rerun;
+		do
 		{
-			if(!recheck.dependenciesResolved())
+			rerun = false;
+			for(Plugin recheck : this.availablePlugins)
 			{
-				System.out.println("rechecking dependencies for: " + recheck.getId());
-				printDependencies(recheck);
-				boolean resolved = this.areDependenciesResolved(recheck);
-				recheck.setDependenciesResolved(resolved);
-				if(recheck.dependenciesResolved())
+				if(!recheck.dependenciesResolved())
 				{
-					retVal.add(recheck);
+					System.out.println("rechecking dependencies for: " + recheck.getId());
+					printDependencies(recheck);
+					boolean resolved = this.areDependenciesResolved(recheck);
+					recheck.setDependenciesResolved(resolved);
+					if(recheck.dependenciesResolved() && !retVal.contains(recheck))
+					{
+						System.out.println("Adding " + recheck.getId() + " to list");
+						retVal.add(recheck);
+						rerun = true;
+					}
 				}
 			}
-		}
+		} while(rerun);
 		
 		return retVal;
 	}
