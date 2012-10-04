@@ -2,7 +2,7 @@ package plugin;
 
 import javax.swing.JPanel;
 
-public abstract class Plugin {
+public abstract class Plugin implements IPlugin {
 	private String id;
 
 	public Plugin(String id) {

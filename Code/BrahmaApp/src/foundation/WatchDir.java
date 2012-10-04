@@ -43,7 +43,8 @@ import java.nio.file.attribute.*;
 import java.io.*;
 import java.util.*;
 
-import plugin.PluginManager;
+import control.Launcher;
+
 
 /**
  * Example to watch a directory (or tree) for changes to files.
@@ -57,7 +58,7 @@ public class WatchDir {
     private boolean trace = false;
     
     // C.R. Change
-    private PluginManager manager;
+    private Launcher manager;
 
     @SuppressWarnings("unchecked")
     static <T> WatchEvent<T> cast(WatchEvent<?> event) {
@@ -102,7 +103,7 @@ public class WatchDir {
     /**
      * Creates a WatchService and registers the given directory
      */
-    WatchDir(PluginManager manager, Path dir, boolean recursive) throws IOException {
+    public WatchDir(Launcher manager, Path dir, boolean recursive) throws IOException {
     	this.manager = manager;
         this.watcher = FileSystems.getDefault().newWatchService();
         this.keys = new HashMap<WatchKey,Path>();
@@ -123,7 +124,7 @@ public class WatchDir {
     /**
      * Process all events for keys queued to the watcher
      */
-    void processEvents() {
+    public void processEvents() {
         for (;;) {
 
             // wait for key to be signalled
