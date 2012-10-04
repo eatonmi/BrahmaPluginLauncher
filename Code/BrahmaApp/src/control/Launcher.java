@@ -40,7 +40,7 @@ public class Launcher implements Runnable {
 	public void run() {
 		// First load existing plugins if any
 		try {
-			Path pluginDir = this.confManager.getPluginFolderPath();
+			Path pluginDir = FileSystems.getDefault().getPath(this.confManager.getPluginPath());
 			File pluginFolder = pluginDir.toFile();
 			File[] files = pluginFolder.listFiles();
 			if(files != null) {

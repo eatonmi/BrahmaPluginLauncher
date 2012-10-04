@@ -121,7 +121,7 @@ public class PluginCore {
 	private void setupMainFrame()
 	{
 		// Lets create the elements that we will need
-		Color color = new Color(this.confManager.getBackgroundRed(), this.confManager.getBackgroundGreen(), this.confManager.getBackgroundBlue());
+		Color color = this.confManager.getBackgroundColor();
 		frame = new JFrame("Pluggable Board Application");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -259,7 +259,7 @@ public class PluginCore {
 	private void changeBackground()
 	{
 		try{
-			Color color = new Color(this.confManager.getBackgroundRed(), this.confManager.getBackgroundGreen(), this.confManager.getBackgroundBlue());
+			Color color = this.confManager.getBackgroundColor();
 			bottom.setBackground(color);
 			scrollPane.setBackground(color);
 			sideList.setBackground(color);

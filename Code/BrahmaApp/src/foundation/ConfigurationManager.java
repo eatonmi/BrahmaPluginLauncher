@@ -10,11 +10,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
-import java.util.Set;
 
-import javax.swing.JOptionPane;
-
-public class ConfigurationManager {
+public class ConfigurationManager extends ConfigurationAccesser {
 	public Color defaultColor;
 	private static ConfigurationManager instance = null;
 	final static String PROPERTIES_NAME = "config.properties";
@@ -68,22 +65,17 @@ public class ConfigurationManager {
 	    return instance;
 	}
 	
-	public Path getPluginFolderPath()
-	{
-		return FileSystems.getDefault().getPath(this.getPropertyValue(PLUGIN_FOLDER_PATH));
-	}
-	
-	public int getBackgroundRed()
+	private int getBackgroundRed()
 	{
 		return Integer.parseInt(this.getPropertyValue(PLUGIN_BACKGROUND_RED));
 	}
 	
-	public int getBackgroundGreen()
+	private int getBackgroundGreen()
 	{
 		return Integer.parseInt(this.getPropertyValue(PLUGIN_BACKGROUND_GREEN));
 	}
 	
-	public int getBackgroundBlue()
+	private int getBackgroundBlue()
 	{
 		return Integer.parseInt(this.getPropertyValue(PLUGIN_BACKGROUND_BLUE));
 	}
@@ -149,10 +141,24 @@ public class ConfigurationManager {
 		}
 	}
 	
-	
-	private Boolean isValidColorVal(int v)
-	{
-		return v >=0 && v<256;
+	@Override
+	public Color getBackgroundColor() {
+		return new Color(this.getBackgroundRed(), this.getBackgroundGreen(), this.getBackgroundBlue());
 	}
 	
+	@Override
+	public void setBackgroundColor(Color color) {
+		this.setProperty(PLUGIN_BACKGROUND_RED, String.valueOf(color.getRed()));
+		this.setProperty(PLUGIN_BACKGROUND_GREEN, String.valueOf(color.getGreen()));
+		this.setProperty(PLUGIN_BACKGROUND_BLUE, String.valueOf(color.getBlue()));
+	}
+	
+	@Override
+	public String getPluginPath() {
+		return this.getPropertyValue(PLUGIN_FOLDER_PATH);
+	}
+	@Override
+	public void setPluginPaht(String path) {
+		this.setProperty(PLUGIN_FOLDER_PATH, path);
+	}
 }
