@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import plugin.ActivityPlugin;
 import plugin.Plugin;
 
 /**
@@ -14,9 +15,10 @@ import plugin.Plugin;
  * @author Chandan R. Rupakheti (rupakhet@rose-hulman.edu)
  *
  */
-public class BouncingBallPlugin extends Plugin {
+public class BouncingBallPlugin extends ActivityPlugin {
 	public static final String PLUGIN_ID = "Bouncing Ball";
 	public static final String FAKE_DEP ="Personal Record";
+	public final int type = 0;
 	
 	private List<String> dependencies;
 	
@@ -59,5 +61,11 @@ public class BouncingBallPlugin extends Plugin {
 	@Override
 	public List<String> getDependencies() {
 		return this.dependencies;
+	}
+	
+	@Override
+	public int getPluginType()
+	{
+		return type;
 	}
 }

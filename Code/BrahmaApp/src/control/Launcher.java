@@ -16,6 +16,7 @@ import java.util.jar.Manifest;
 import plugin.Plugin;
 
 import foundation.DependencyManager;
+import foundation.ConfigurationManager;
 import foundation.DependencyRetreiver;
 import foundation.WatchDir;
 
@@ -23,12 +24,15 @@ public class Launcher implements Runnable {
 	private PluginCore core;
 	private WatchDir watchDir;
 	private HashMap<Path, Plugin> pathToPlugin;
+	private DependencyManager depManager;
+	private ConfigurationManager confManager;
 
 	public Launcher(PluginCore core) throws IOException {
 		this.core = core;
 		this.pathToPlugin = new HashMap<Path, Plugin>();
 		watchDir = new WatchDir(this, FileSystems.getDefault().getPath("plugins"), false);
-        @SuppressWarnings("unused")
+		this.depManager = new DependencyManager();
+		this.confManager = ConfigurationManager.getInstance();
 		DependencyRetreiver baseRet =  new DependencyRetreiver();
 	}
 
@@ -36,7 +40,7 @@ public class Launcher implements Runnable {
 	public void run() {
 		// First load existing plugins if any
 		try {
-			Path pluginDir = FileSystems.getDefault().getPath("plugins");
+			Path pluginDir = FileSystems.getDefault().getPath(this.confManager.getPluginPath());
 			File pluginFolder = pluginDir.toFile();
 			File[] files = pluginFolder.listFiles();
 			if(files != null) {

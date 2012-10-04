@@ -10,27 +10,11 @@ import plugin.Plugin;
 public class testPlugin extends Plugin {
 
 	private List<String> dependencies;
+	public final int type = 3;
 
 	public testPlugin(String id){
 		super(id);
 		this.dependencies = new ArrayList<String>();
-	}
-	
-	@Override
-	public void layout(JPanel panel) {
-		
-	}
-
-	@Override
-	public void start() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void stop() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -41,6 +25,12 @@ public class testPlugin extends Plugin {
 	@Override
 	public List<String> getDependencies() {
 		return this.dependencies;
+	}
+	
+	@Override
+	public int getPluginType()
+	{
+		return type;
 	}
 
 }
