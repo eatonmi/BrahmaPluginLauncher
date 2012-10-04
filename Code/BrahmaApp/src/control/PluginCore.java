@@ -18,6 +18,7 @@ public class PluginCore {
 	private JFrame frame;
 	private JPanel contentPane;
 	private JLabel bottomLabel;
+	@SuppressWarnings("rawtypes")
 	private JList sideList;
 	private DefaultListModel<String> listModel;
 	private JPanel centerEnvelope;
@@ -29,6 +30,7 @@ public class PluginCore {
 	// Plugin manager
 	Launcher pluginManager;
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public PluginCore() {
 		idToPlugin = new HashMap<String, Plugin>();
 		
@@ -142,5 +144,10 @@ public class PluginCore {
 		plugin.stop();
 
 		this.bottomLabel.setText("The " + plugin.getId() + " plugin has been recently removed!");
+	}
+	
+	public HashMap<String, Plugin> getLoadedPlugins()
+	{
+		return this.idToPlugin;
 	}
 }

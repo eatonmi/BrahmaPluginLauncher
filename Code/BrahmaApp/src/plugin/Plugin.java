@@ -5,8 +5,10 @@ import java.util.List;
 import javax.swing.JPanel;
 
 public abstract class Plugin {
+
 	private String id;
-	private List<String> dependencies;
+	private boolean dependenciesResolved;
+
 
 	public Plugin(String id) {
 		this.id = id;
@@ -20,13 +22,22 @@ public abstract class Plugin {
 		this.id = id;
 	}
 	
-	public List<String> getDependencies()
+	public boolean dependenciesResolved()
 	{
-		return this.dependencies;
+		return this.dependenciesResolved;
+	}
+	
+	public void setDependenciesResolved(boolean areResolved)
+	{
+		this.dependenciesResolved = areResolved;
 	}
 
 	// Callback method
 	public abstract void layout(JPanel panel);
 	public abstract void start();
 	public abstract void stop();
+	
+	//Dependency methods
+	public abstract void addDependency(String id);
+	public abstract List<String> getDependencies();
 }
