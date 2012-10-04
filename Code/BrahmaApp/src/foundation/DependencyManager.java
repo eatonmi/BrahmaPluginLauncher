@@ -16,6 +16,7 @@ public class DependencyManager {
 	
 	public void addPluginToLoadedPlugins(Plugin add)
 	{
+		System.out.println("Adding " + add.getId() + " to dependency manager");
 		add.setDependenciesResolved(this.areDependenciesResolved(add));
 		this.availablePlugins.add(add);
 		this.recheckAllDependencies();

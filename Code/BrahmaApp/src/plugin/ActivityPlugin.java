@@ -4,9 +4,8 @@ import javax.swing.JPanel;
 
 public abstract class ActivityPlugin extends Plugin {
 	
-	public ActivityPlugin(String id)
+	public ActivityPlugin()
 	{
-		super(id);
 	}
 	
 	// Callback method

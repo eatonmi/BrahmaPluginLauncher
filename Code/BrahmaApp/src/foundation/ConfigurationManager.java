@@ -5,11 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
+
+import plugin.ConfigurationAccesser;
 
 public class ConfigurationManager extends ConfigurationAccesser {
 	public Color defaultColor;

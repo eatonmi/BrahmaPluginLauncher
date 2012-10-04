@@ -13,7 +13,9 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
+import plugin.IPluginDetails;
 import plugin.Plugin;
+import plugin.PluginConstants;
 
 import foundation.DependencyManager;
 import foundation.ConfigurationManager;
@@ -33,6 +35,7 @@ public class Launcher implements Runnable {
 		watchDir = new WatchDir(this, FileSystems.getDefault().getPath("plugins"), false);
 		this.depManager = new DependencyManager();
 		this.confManager = ConfigurationManager.getInstance();
+		@SuppressWarnings("unused")
 		DependencyRetreiver baseRet =  new DependencyRetreiver();
 	}
 
@@ -67,18 +70,13 @@ public class Launcher implements Runnable {
         Attributes mainAttribs = mf.getMainAttributes();
         
         // Get hold of the Plugin-Class attribute and load the class
-        String className = mainAttribs.getValue("Plugin-Class");
         URL[] urls = new URL[]{bundlePath.toUri().toURL()};
-        @SuppressWarnings("resource")
-		ClassLoader classLoader = new URLClassLoader(urls);
-        Class<?> pluginClass = classLoader.loadClass(className);
-        
-        // Create a new instance of the plugin class and add to the Dependency Manager
-        Plugin plugin = (Plugin)pluginClass.newInstance();
-        DependencyManager depManager = DependencyRetreiver.getManager();
-        
-        
-        depManager.addPluginToLoadedPlugins(plugin);
+        List<Plugin> imported = this.getAllPresentPlugins(mainAttribs, urls);
+       
+        for(Plugin p : imported)
+        {
+        	depManager.addPluginToLoadedPlugins(p);
+        }
         List<Plugin> toLoad = removeAllLaunchedPlugins(depManager.getResolvedPlugins()); 
         // Load any plugins whose dependencies are now resolved (including the freshly loaded one)
         
@@ -86,7 +84,11 @@ public class Launcher implements Runnable {
         {
         	this.core.addPlugin(load);
         }
-        this.pathToPlugin.put(bundlePath, plugin);
+        
+        for(Plugin p : imported)
+        {
+        	this.pathToPlugin.put(bundlePath, p);
+        }
 
         // Release the jar resources
         jarFile.close();
@@ -109,5 +111,66 @@ public class Launcher implements Runnable {
 				retVal.add(check);
 		}
 		return retVal;
+	}
+	
+	private List<Plugin> getAllPresentPlugins(Attributes attribs, URL[] urls)
+	{
+		List<Plugin> retVal = new ArrayList<Plugin>();
+		
+        String activityName = attribs.getValue("Activity-Class");
+        String activityDetails = attribs.getValue("Activity-Details");
+        String configName = attribs.getValue("Config-Class");
+        String configDetails = attribs.getValue("Config-Details");
+        String panelName = attribs.getValue("Panel-Class");
+        String panelDetails = attribs.getValue("Panel-Details");
+        
+        System.out.println("AN: " + activityName);
+        System.out.println("AD: " + activityDetails);
+        System.out.println("CN: " + configName);
+        System.out.println("CD: " + configDetails);
+        System.out.println("PN: " + panelName);
+        System.out.println("PD: " + panelDetails);
+        
+        try
+        {
+        	@SuppressWarnings("resource")
+			ClassLoader classLoader = new URLClassLoader(urls);
+	        if(activityName != null && activityDetails != null)
+	        {
+	        	Class<?> activityClass = classLoader.loadClass(activityName);
+	        	Plugin p = ((Plugin)activityClass.newInstance());
+	        	Class<?> activityDetailClass = classLoader.loadClass(activityDetails);
+	        	IPluginDetails activityDetailCast = (IPluginDetails)activityDetailClass.newInstance();
+	        	p.setPluginType(PluginConstants.ACTIVITY_PLUGIN);
+	        	p.setId(activityDetailCast.getId());
+	        	retVal.add(p);
+	        }
+	        if(configName != null && configDetails != null)
+	        {
+	        	Class<?> configClass = classLoader.loadClass(configName);
+	        	Class<?> configDetailClass = classLoader.loadClass(configDetails);
+	        	IPluginDetails configDetailCast = (IPluginDetails)configDetailClass.newInstance();
+	        	Plugin p = ((Plugin)configClass.newInstance());
+	        	p.setPluginType(PluginConstants.CONFIGURATION_PLUGIN);
+	        	p.setId(configDetailCast.getId());
+	        	retVal.add((Plugin)configClass.newInstance());
+	        }
+	        if(panelName != null && panelDetails != null)
+	        {
+	        	Class<?> panelClass = classLoader.loadClass(panelName);
+	        	Plugin p = ((Plugin)panelClass.newInstance());
+	        	Class<?> panelDetailClass = classLoader.loadClass(panelDetails);
+	        	IPluginDetails panelDetailCast = (IPluginDetails)panelDetailClass.newInstance();
+	        	p.setPluginType(PluginConstants.PANEL_PLUGIN);
+	        	p.setId(panelDetailCast.getId());
+	        	retVal.add((Plugin)panelClass.newInstance());
+	        }
+        }
+        catch(Exception e)
+        {
+        	System.out.print(e.getMessage());
+        }
+        
+        return retVal;
 	}
 }

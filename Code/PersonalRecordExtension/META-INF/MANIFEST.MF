@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
-Plugin-Class: recordextension.PersonalRecordExtension
+Activity-Class: recordextension.PersonalRecordExtension
+Activity-Details: recordextension.PRDetails
 

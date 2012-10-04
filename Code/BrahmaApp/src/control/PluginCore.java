@@ -20,6 +20,7 @@ import plugin.ActivityPlugin;
 import foundation.ConfigurationManager;
 import foundation.DependencyRetreiver;
 
+import plugin.LayoutAccesser;
 import plugin.Plugin;
 import plugin.PluginConstants;
 
@@ -50,7 +51,6 @@ public class PluginCore extends LayoutAccesser {
 	// Plugin manager
 	Launcher pluginManager;
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public PluginCore() {
 		this.textFields = new ArrayList<JTextField>();
 		this.confManager = ConfigurationManager.getInstance();
@@ -104,6 +104,7 @@ public class PluginCore extends LayoutAccesser {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void setupMainFrame()
 	{
 		// Lets create the elements that we will need

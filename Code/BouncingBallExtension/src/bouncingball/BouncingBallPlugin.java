@@ -7,7 +7,6 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import plugin.ActivityPlugin;
-import plugin.Plugin;
 
 /**
  * An extension plugin.
@@ -17,23 +16,19 @@ import plugin.Plugin;
  */
 public class BouncingBallPlugin extends ActivityPlugin {
 	public static final String PLUGIN_ID = "Bouncing Ball";
-	public static final String FAKE_DEP ="Personal Record";
-	public final int type = 0;
 	
 	private List<String> dependencies;
 	
 	private BBPanel panel;
 	
 	public BouncingBallPlugin() {
-		super(PLUGIN_ID);
 		this.dependencies = new ArrayList<String>();
-		this.addDependency(FAKE_DEP);
 	}
 
 	@Override
 	public void layout(JPanel parentPanel) {
 		parentPanel.setLayout(new BorderLayout());
-		panel = new BBPanel();
+		this.panel = new BBPanel();
 		parentPanel.add(panel);
 	}
 
@@ -63,9 +58,4 @@ public class BouncingBallPlugin extends ActivityPlugin {
 		return this.dependencies;
 	}
 	
-	@Override
-	public int getPluginType()
-	{
-		return type;
-	}
 }

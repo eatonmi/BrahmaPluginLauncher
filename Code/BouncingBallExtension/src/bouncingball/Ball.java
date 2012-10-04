@@ -8,7 +8,7 @@ package bouncingball;
 import java.awt.*;
 
 ///////////////////////////////////////////////////////////////// BallModel
-public class Ball {
+class Ball {
 	//... Constants
 	final static int DIAMETER = 21;
 

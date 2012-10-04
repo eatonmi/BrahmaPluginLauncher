@@ -15,7 +15,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 /////////////////////////////////////////////////////////////// BouncingBall
-public class BallInBox extends JPanel {
+class BallInBox extends JPanel {
 	/**
 	 * 
 	 */

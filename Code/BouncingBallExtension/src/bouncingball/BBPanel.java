@@ -10,7 +10,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 /////////////////////////////////////////////////////////////////// BBPanel
-class BBPanel extends JPanel {
+public class BBPanel extends JPanel {
 	/**
 	 * 
 	 */
