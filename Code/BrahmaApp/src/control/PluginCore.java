@@ -11,7 +11,9 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import plugin.ActivityPlugin;
 import plugin.Plugin;
+import plugin.PluginConstants;
 
 
 public class PluginCore {
@@ -26,7 +28,7 @@ public class PluginCore {
 	
 	// For holding registered plugin
 	private HashMap<String, Plugin> idToPlugin;
-	private Plugin currentPlugin;
+	private ActivityPlugin currentPlugin;
 	
 	// Plugin manager
 	Launcher pluginManager;
@@ -70,7 +72,7 @@ public class PluginCore {
 				// List has finalized selection, let's process further
 				int index = sideList.getSelectedIndex();
 				String id = listModel.elementAt(index);
-				Plugin plugin = idToPlugin.get(id);
+				ActivityPlugin plugin = (ActivityPlugin)idToPlugin.get(id);
 				
 				if(plugin == null || plugin.equals(currentPlugin))
 					return;
@@ -133,7 +135,13 @@ public class PluginCore {
 	
 	public void addPlugin(Plugin plugin) {
 		this.idToPlugin.put(plugin.getId(), plugin);
-		this.listModel.addElement(plugin.getId());
+		
+		switch(plugin.getPluginType())
+		{
+		case PluginConstants.ACTIVITY_PLUGIN:
+			this.listModel.addElement(plugin.getId());
+		}
+		
 		this.bottomLabel.setText("The " + plugin.getId() + " plugin has been recently added!");
 	}
 	
@@ -142,7 +150,11 @@ public class PluginCore {
 		this.listModel.removeElement(id);
 		
 		// Stop the plugin if it is still running
-		plugin.stop();
+		switch(plugin.getPluginType())
+		{
+		case PluginConstants.ACTIVITY_PLUGIN:
+			((ActivityPlugin)plugin).stop();
+		}
 
 		this.bottomLabel.setText("The " + plugin.getId() + " plugin has been recently removed!");
 	}
