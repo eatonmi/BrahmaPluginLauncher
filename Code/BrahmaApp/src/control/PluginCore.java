@@ -32,6 +32,7 @@ public class PluginCore {
 	private JPanel contentPanel;
 	private JPanel settingsPanel;
 	private JLabel bottomLabel;
+	@SuppressWarnings("rawtypes")
 	private JList sideList;
 	private DefaultListModel<String> listModel;
 	private JPanel centerEnvelope;
@@ -45,6 +46,7 @@ public class PluginCore {
 	// Plugin manager
 	Launcher pluginManager;
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public PluginCore() {
 		this.textFields = new ArrayList<JTextField>();
 		this.confManager = ConfigurationManager.getInstance();
@@ -275,5 +277,10 @@ public class PluginCore {
 				    "Error",
 				    JOptionPane.ERROR_MESSAGE);
 		}
+	}
+	
+	public HashMap<String, Plugin> getLoadedPlugins()
+	{
+		return this.idToPlugin;
 	}
 }
