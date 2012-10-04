@@ -23,6 +23,10 @@ import javax.swing.JTextField;
  * @author Chandan R. Rupakheti (rupakhet@rose-hulman.edu)
  */
 public class PersonalRecordPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public String name;
 	public String address;
 	public String interest;

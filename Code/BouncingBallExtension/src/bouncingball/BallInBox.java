@@ -13,10 +13,14 @@ package bouncingball;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
 
 /////////////////////////////////////////////////////////////// BouncingBall
 public class BallInBox extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4125358430447953810L;
+
 	//============================================== fields
 	//... Instance variables representing the ball.
 	private Ball m_ball         = new Ball(0, 0, 2, 3);
