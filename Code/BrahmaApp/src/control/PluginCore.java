@@ -16,10 +16,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import plugin.ActivityPlugin;
 import foundation.ConfigurationManager;
 import foundation.DependencyRetreiver;
 
 import plugin.Plugin;
+import plugin.PluginConstants;
 
 
 public class PluginCore extends LayoutAccesser {
@@ -43,7 +45,7 @@ public class PluginCore extends LayoutAccesser {
 	
 	// For holding registered plugin
 	private HashMap<String, Plugin> idToPlugin;
-	private Plugin currentPlugin;
+	private ActivityPlugin currentPlugin;
 	
 	// Plugin manager
 	Launcher pluginManager;
@@ -92,22 +94,6 @@ public class PluginCore extends LayoutAccesser {
 				frame.setVisible(false);
 			}
 		});
-	}
-	
-	public void addPlugin(Plugin plugin) {
-		this.idToPlugin.put(plugin.getId(), plugin);
-		this.listModel.addElement(plugin.getId());
-		this.bottomLabel.setText("The " + plugin.getId() + " plugin has been recently added!");
-	}
-	
-	public void removePlugin(String id) {
-		Plugin plugin = this.idToPlugin.remove(id);
-		this.listModel.removeElement(id);
-		
-		// Stop the plugin if it is still running
-		plugin.stop();
-
-		this.bottomLabel.setText("The " + plugin.getId() + " plugin has been recently removed!");
 	}
 	
 	public void removeAllPlugins()
@@ -173,7 +159,7 @@ public class PluginCore extends LayoutAccesser {
 				// List has finalized selection, let's process further
 				int index = sideList.getSelectedIndex();
 				String id = listModel.elementAt(index);
-				Plugin plugin = idToPlugin.get(id);
+				ActivityPlugin plugin = (ActivityPlugin)idToPlugin.get(id);
 				
 				if(plugin == null || plugin.equals(currentPlugin))
 					return;
@@ -247,6 +233,32 @@ public class PluginCore extends LayoutAccesser {
 		settingsFrame.setVisible(false);
 		this.reloadPlugins();
 		this.changeBackground();
+	}
+	
+	public void addPlugin(Plugin plugin) {
+		this.idToPlugin.put(plugin.getId(), plugin);
+		
+		switch(plugin.getPluginType())
+		{
+		case PluginConstants.ACTIVITY_PLUGIN:
+			this.listModel.addElement(plugin.getId());
+		}
+		
+		this.bottomLabel.setText("The " + plugin.getId() + " plugin has been recently added!");
+	}
+	
+	public void removePlugin(String id) {
+		Plugin plugin = this.idToPlugin.remove(id);
+		this.listModel.removeElement(id);
+		
+		// Stop the plugin if it is still running
+		switch(plugin.getPluginType())
+		{
+		case PluginConstants.ACTIVITY_PLUGIN:
+			((ActivityPlugin)plugin).stop();
+		}
+
+		this.bottomLabel.setText("The " + plugin.getId() + " plugin has been recently removed!");
 	}
 	
 	private void reloadPlugins()

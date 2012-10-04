@@ -7,10 +7,12 @@ import java.util.List;
 import javax.swing.JPanel;
 
 
+import plugin.ActivityPlugin;
 import plugin.Plugin;
 
-public class PersonalRecordExtension extends Plugin {
+public class PersonalRecordExtension extends ActivityPlugin {
 	public static final String PLUGIN_ID = "Personal Record";
+	public final int type = 0;
 	
 	private List<String> dependencies;
 	
@@ -54,6 +56,12 @@ public class PersonalRecordExtension extends Plugin {
 	@Override
 	public List<String> getDependencies() {
 		return this.dependencies;
+	}
+	
+	@Override
+	public int getPluginType()
+	{
+		return type;
 	}
 
 }
