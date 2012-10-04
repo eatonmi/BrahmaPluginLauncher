@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -279,8 +280,8 @@ public class PluginCore {
 		}
 	}
 	
-	public HashMap<String, Plugin> getLoadedPlugins()
+	public Set<String> getPluginIds()
 	{
-		return this.idToPlugin;
+		return this.idToPlugin.keySet();
 	}
 }

@@ -1,6 +1,5 @@
 package tests;
 
-import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +24,7 @@ public class dependencyTests {
 	@Before
 	public void setUp()
 	{
+		@SuppressWarnings("unused")
 		DependencyRetreiver retreiver = new DependencyRetreiver();
 		this.depManager = DependencyRetreiver.getManager();
 		this.basePlugins = new ArrayList<Plugin>();

@@ -18,12 +18,23 @@ public class DependencyManager {
 	{
 		add.setDependenciesResolved(this.areDependenciesResolved(add));
 		this.availablePlugins.add(add);
-		this.recheckAllDependenciesAndGetNewlyResolved();
+		this.recheckAllDependencies();
 	}
 	
 	public void removePluginFromList(String id)
 	{
 		this.availablePlugins.remove(id);
+	}
+	
+	public List<Plugin> getResolvedPlugins()
+	{
+		List<Plugin> resolved = new ArrayList<Plugin>();
+		for(Plugin check : this.availablePlugins)
+		{
+			if(check.dependenciesResolved())
+				resolved.add(check);
+		}
+		return resolved;
 	}
 	
 	public boolean areDependenciesResolved(Plugin check)
@@ -58,7 +69,7 @@ public class DependencyManager {
 		return retVal;
 	}
 
-	public List<Plugin> recheckAllDependenciesAndGetNewlyResolved() 
+	private void recheckAllDependencies() 
 	{
 		ArrayList<Plugin> retVal = new ArrayList<Plugin>();
 		boolean rerun;
@@ -82,8 +93,6 @@ public class DependencyManager {
 				}
 			}
 		} while(rerun);
-		
-		return retVal;
 	}
 	
 	public void clearDependencies()
