@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.util.HashMap;
+import java.util.Set;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -146,8 +147,8 @@ public class PluginCore {
 		this.bottomLabel.setText("The " + plugin.getId() + " plugin has been recently removed!");
 	}
 	
-	public HashMap<String, Plugin> getLoadedPlugins()
+	public Set<String> getPluginIds()
 	{
-		return this.idToPlugin;
+		return this.idToPlugin.keySet();
 	}
 }

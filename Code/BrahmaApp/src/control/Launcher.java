@@ -6,6 +6,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.jar.Attributes;
@@ -74,14 +75,12 @@ public class Launcher implements Runnable {
         
         
         depManager.addPluginToLoadedPlugins(plugin);
-        List<Plugin> toLoad = depManager.recheckAllDependenciesAndGetNewlyResolved();
-        
+        List<Plugin> toLoad = removeAllLaunchedPlugins(depManager.getResolvedPlugins()); 
         // Load any plugins whose dependencies are now resolved (including the freshly loaded one)
         
         for(Plugin load : toLoad)
         {
         	this.core.addPlugin(load);
-        	
         }
         this.pathToPlugin.put(bundlePath, plugin);
 
@@ -95,5 +94,16 @@ public class Launcher implements Runnable {
 			this.core.removePlugin(plugin.getId());
 			DependencyRetreiver.getManager().removePluginFromList(plugin.getId());
 		}
+	}
+	
+	private List<Plugin> removeAllLaunchedPlugins(List<Plugin> checkAgainst)
+	{
+		List<Plugin> retVal = new ArrayList<Plugin>();
+		for(Plugin check : checkAgainst)
+		{
+			if(!this.core.getPluginIds().contains(check.getId()))
+				retVal.add(check);
+		}
+		return retVal;
 	}
 }
